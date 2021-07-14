@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monaco Editor</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+</head>
+<body>
+<h2>Monaco Editor</h2>
+<input type="file" accept=".txt" id="fileInput" />
+<div id="container" style="width: 800px; height: 400px; border: 1px solid grey"></div>
+<button id="saveBtn">保存文件</button>
+
+<script src="../../node_modules/monaco-editor/min/vs/loader.js"></script>
+<script>
+  require.config({ paths: { vs: '../../node_modules/monaco-editor/min/vs' } });
+
+  require(['vs/editor/editor.main'], function () {
+    const editor = monaco.editor.create(document.getElementById('container'), {
+      value: "",
+      language: 'javascript'
+    });
+
+    let fileName = "";
+    const fileInput = document.getElementById('fileInput');
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file.name) {
+        fileName = file.name;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const content = event.target?.result || "";
+          editor.setValue(content);
+        };
+        reader.onerror = (err) => {
+          console.log(err);
+        };
+        reader.readAsText(file);
+      }
+      console.log(file)
+    });
+
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.addEventListener('click', () => {
+      const content = editor.getValue();
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      let url = URL.createObjectURL(blob);
+      const downloadAnchorNode = document.createElement("a");
+      downloadAnchorNode.setAttribute("href", url);
+      downloadAnchorNode.setAttribute("download", fileName);
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+    });
+  });
+</script>
+</body>
+</html>
