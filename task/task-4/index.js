@@ -103,8 +103,8 @@ class Engine {
         }
       }
 
-      let html = this.scopeHtmlParse(pNode, data, scope);
-      let ele = this.createElement(pNode, html);
+      const html = this.scopeHtmlParse(pNode, data, scope);
+      const ele = this.createElement(pNode, html);
       this.scopeAttrParse(ele, pNode, data, scope);
       pDom.appendChild(ele);
 
@@ -141,7 +141,7 @@ class Engine {
   }
 
   createElement(node, html) {
-    let ignoreAttr = ["for", "click"];
+    let ignoreAttr = ["v-if"];
     let dom = document.createElement(node.tag);
     for (let [key, val] of node.attr) {
       if (!ignoreAttr.includes(key)) {
