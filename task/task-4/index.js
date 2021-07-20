@@ -157,11 +157,7 @@ class Engine {
 
 const render = (tmpl, data = {}, selector = '') => {
   const engine = new Engine();
-  const dom = engine.render(tmpl, data);
-  if (dom) {
-    document.querySelector(selector).appendChild(dom);
-  }
-  return dom;
+  return engine.render(tmpl, data);
 };
 
 const tmpl = `
@@ -183,5 +179,6 @@ const data = {
   info: {showImage: true, showDate: true, name: "aaa"}
 };
 
-const test = render(tmpl, data, '#root');
-console.log(test);
+const dom = render(tmpl, data);
+document.querySelector('#root').appendChild(dom)
+console.log(dom);
